@@ -1,0 +1,101 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 175.99999999999991
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 261.75
+          },
+          "nodeIndex": "dComprador",
+          "nodeLineageTag": "8417228c-bce4-4c90-b047-630bec4726f8",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 284,
+            "y": 261.75
+          },
+          "nodeIndex": "dFornecedor",
+          "nodeLineageTag": "67888816-6d64-44ac-9dc7-fb735aad6afa",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 249.75
+          },
+          "nodeIndex": "dMateriaPrima",
+          "nodeLineageTag": "335c1966-d3fe-4b18-9d48-ace12c5185b7",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 313,
+            "y": 543.75
+          },
+          "nodeIndex": "fCompras",
+          "nodeLineageTag": "95060aa4-fe5a-48f5-a9ab-5d4da55c5b86",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 858,
+            "y": 175.75000000000014
+          },
+          "nodeIndex": "_Medidas",
+          "nodeLineageTag": "5cee2529-ab81-43ae-ab4d-c3372b1bbe00",
+          "size": {
+            "height": 72,
+            "width": 234
+          },
+          "zIndex": 0,
+          "expandedHeight": 104
+        },
+        {
+          "location": {
+            "x": 843,
+            "y": 307.24999999999994
+          },
+          "nodeIndex": "Calendario",
+          "nodeLineageTag": "1dcec386-d597-4fd9-b159-3adc48b233d3",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas as tabelas",
+      "zoomValue": 100.00000000000004,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas as tabelas",
+  "defaultDiagram": "Todas as tabelas"
+}

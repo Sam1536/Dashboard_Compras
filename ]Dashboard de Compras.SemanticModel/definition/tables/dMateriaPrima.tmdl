@@ -1,0 +1,43 @@
+table dMateriaPrima
+	lineageTag: 335c1966-d3fe-4b18-9d48-ace12c5185b7
+
+	column 'Codigo MP'
+		dataType: int64
+		formatString: 0
+		lineageTag: 020157df-4022-4ed4-95a9-60c13c125c89
+		summarizeBy: none
+		sourceColumn: Codigo MP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Nome MP'
+		dataType: string
+		lineageTag: aaf8e782-1e12-4ea0-8cec-a52c24a0b4fe
+		summarizeBy: none
+		sourceColumn: Nome MP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Custo Unitário'
+		dataType: double
+		lineageTag: 625309eb-2b79-4183-b578-3a97bda5fff6
+		summarizeBy: none
+		sourceColumn: Custo Unitário
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition dMateriaPrima = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\a-agn\Documents\PoweBi Exercícios e Outros\PowerBI_Impressionador_Hashtag_2023 Materia\Importação e Tratamento de BD-Power Query\Lives Dashboards\Dashboard de Compras\Base Compras.xlsx"), null, true),
+				    dMateriaPrima_Sheet = Fonte{[Item="dMateriaPrima",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(dMateriaPrima_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Codigo MP", Int64.Type}, {"Nome MP", type text}, {"Custo Unitário", type number}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

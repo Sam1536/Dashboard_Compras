@@ -1,0 +1,41 @@
+relationship 4b53a4de-f678-4f33-8f01-ab34a6e2af9d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fCompras.'Data Saída'
+	toColumn: LocalDateTable_24711b65-c74a-437f-813a-d39f62edf8ec.Date
+
+relationship fb5bddd5-1216-4b43-bf71-811bc3123629
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fCompras.'Previsão Entrega'
+	toColumn: LocalDateTable_9963bfaa-d255-4a30-a714-b0c6607cd08a.Date
+
+relationship 053db939-4490-4a86-b242-0f4b4cab34c4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fCompras.'Data Entrega'
+	toColumn: LocalDateTable_30766662-040e-4b17-95de-a0e5a903f797.Date
+
+relationship 5d80386f-4e76-0e69-ade0-1206e664cdbe
+	fromColumn: fCompras.Comprador
+	toColumn: dComprador.'Codigo Comprador'
+
+relationship 60f17490-9939-f0e3-6b07-e8d890eb8fa4
+	fromColumn: fCompras.Fornecedor
+	toColumn: dFornecedor.'Codigo Fornecedor'
+
+relationship bd88f2cd-b1e2-7960-2a10-64f1a913f7a4
+	fromColumn: fCompras.'Materia Prima'
+	toColumn: dMateriaPrima.'Codigo MP'
+
+relationship 84f89d52-0d2c-4b2a-81eb-8db88d5788b2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendario.Data
+	toColumn: LocalDateTable_4a72f813-dc79-47f3-8d2e-859895f01156.Date
+
+relationship ad5ab785-c220-4238-b4d1-27e200368f20
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendario.Mês/Ano
+	toColumn: LocalDateTable_fb5e08b1-d4e2-46f5-8280-6b5d57b6ba8c.Date
+
+relationship 47ddf6fc-5784-5a71-a20c-d24cb6214427
+	fromColumn: fCompras.'Data Pedido'
+	toColumn: Calendario.Data
+

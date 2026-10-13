@@ -1,0 +1,89 @@
+table _Medidas
+	lineageTag: 5cee2529-ab81-43ae-ab4d-c3372b1bbe00
+
+	measure 'Qtd Compras' = SUM(fCompras[Quantidade])
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 33a61388-6f23-4f5e-8fd8-d283af398afd
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Custo Original' = SUMX(fCompras,  fCompras[Quantidade] * fCompras[Custo Unitario])
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: b94ffbfb-e1f4-43f1-a247-8c5ea61b7ce2
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Custo com Desconto' = ```
+			SUMX(
+			    fCompras,
+			    (fCompras[Quantidade] * fCompras[Custo Unitario]) 
+			    * (1 - fCompras[Desconto (%)] / 100)
+			)
+			```
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 4a7004a6-759b-48d7-9790-30a38954cd14
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Lead Time Compra' = ```
+			
+			AVERAGEX(
+			     fCompras,
+			     DATEDIFF( 
+			     fCompras[Data Pedido], fCompras[Data Entrega], DAY
+			     )
+			)
+			```
+		lineageTag: 009127a9-7a7d-499b-8928-3c32f8463cf2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Atraso Medio Entrega' =
+			
+			AVERAGEX(
+			    fCompras,
+			     DATEDIFF(
+			        fCompras[Previsão Entrega], fCompras[Data Entrega], DAY
+			     )
+			)
+		lineageTag: 9b5a8118-b080-4dcb-ade5-e5e468f71696
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Saving = [Custo Original] - [Custo com Desconto]
+		lineageTag: 41e3de4e-7b05-4727-8371-e24510c6c16d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Lead Time Despacho' = ```
+			
+			AVERAGEX(
+			     fCompras,
+			     DATEDIFF( 
+			     fCompras[Data Pedido], fCompras[Data Saída], DAY
+			     )
+			)
+			```
+		lineageTag: 18d330cf-68ba-4239-9795-283e1a854238
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Mes Selecionado' = ```
+			SELECTEDVALUE(Calendario[Nome do Mês],"Janeiro") 
+			```
+		lineageTag: b3e735c2-cc44-481b-b455-0a8c64326089
+
+	partition _Medidas = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", type text}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

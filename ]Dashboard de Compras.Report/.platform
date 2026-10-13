@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "]Dashboard de Compras"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "625931f3-e461-4279-a187-5e8b46b0b6ca"
+  }
+}

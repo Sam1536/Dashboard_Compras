@@ -1,0 +1,150 @@
+table fCompras
+	lineageTag: 95060aa4-fe5a-48f5-a9ab-5d4da55c5b86
+
+	column Pedido
+		dataType: int64
+		formatString: 0
+		lineageTag: b876c1df-50dc-4f20-b244-017a3b0d9c09
+		summarizeBy: sum
+		sourceColumn: Pedido
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Pedido'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 00adee79-764c-454c-954d-91f8a64d5ee2
+		summarizeBy: none
+		sourceColumn: Data Pedido
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Data Saída'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d356c48c-d7d3-4747-9ecf-9348cf9883a3
+		summarizeBy: none
+		sourceColumn: Data Saída
+
+		variation Variation
+			isDefault
+			relationship: 4b53a4de-f678-4f33-8f01-ab34a6e2af9d
+			defaultHierarchy: LocalDateTable_24711b65-c74a-437f-813a-d39f62edf8ec.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Previsão Entrega'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e1426b40-29d0-413b-8342-462b25f4fe7d
+		summarizeBy: none
+		sourceColumn: Previsão Entrega
+
+		variation Variation
+			isDefault
+			relationship: fb5bddd5-1216-4b43-bf71-811bc3123629
+			defaultHierarchy: LocalDateTable_9963bfaa-d255-4a30-a714-b0c6607cd08a.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Data Entrega'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 26849921-9f03-4f50-956e-046541fbdc6c
+		summarizeBy: none
+		sourceColumn: Data Entrega
+
+		variation Variation
+			isDefault
+			relationship: 053db939-4490-4a86-b242-0f4b4cab34c4
+			defaultHierarchy: LocalDateTable_30766662-040e-4b17-95de-a0e5a903f797.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Comprador
+		dataType: int64
+		formatString: 0
+		lineageTag: 837663e6-e202-4414-af9d-6fd833420924
+		summarizeBy: none
+		sourceColumn: Comprador
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Materia Prima'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3430e559-b9dd-48c9-b289-7d7e76355a3e
+		summarizeBy: none
+		sourceColumn: Materia Prima
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantidade
+		dataType: int64
+		formatString: 0
+		lineageTag: 7b7cab52-b645-48dc-bc04-ed3e112b010c
+		summarizeBy: sum
+		sourceColumn: Quantidade
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Desconto (%)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8fb8acd7-ef38-465a-b127-eea3c6603661
+		summarizeBy: sum
+		sourceColumn: Desconto (%)
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fornecedor
+		dataType: int64
+		formatString: 0
+		lineageTag: b7b4bc59-8d73-4e0d-8947-e9ba22c851e2
+		summarizeBy: none
+		sourceColumn: Fornecedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column Personalizar
+		dataType: string
+		lineageTag: 82497abb-e766-48c8-b4e4-16f23a0db696
+		summarizeBy: none
+		sourceColumn: Personalizar
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Custo Unitario' = RELATED(dMateriaPrima[Custo Unitário])
+		lineageTag: fd163f3f-b8cb-43ce-9d2f-a89daffdc32a
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fCompras = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\a-agn\Documents\PoweBi Exercícios e Outros\PowerBI_Impressionador_Hashtag_2023 Materia\Importação e Tratamento de BD-Power Query\Lives Dashboards\Dashboard de Compras\Base Compras.xlsx"), null, true),
+				    fCompras_Sheet = Fonte{[Item="fCompras",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(fCompras_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Pedido", Int64.Type}, {"Data Pedido", type date}, {"Data Saída", type date}, {"Previsão Entrega", type date}, {"Data Entrega", type date}, {"Comprador", Int64.Type}, {"Materia Prima", Int64.Type}, {"Quantidade", Int64.Type}, {"Desconto (%)", Int64.Type}, {"Fornecedor", Int64.Type}}),
+				    #"Linhas em Branco Removidas" = Table.SelectRows(#"Tipo Alterado", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Coluna Condicional Adicionada" = Table.AddColumn(#"Linhas em Branco Removidas", "Personalizar", each if [Data Entrega] >= [Previsão Entrega] then "Atrasada" else "No Prazo "),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Coluna Condicional Adicionada",{{"Personalizar", type text}})
+				in
+				    #"Tipo Alterado1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

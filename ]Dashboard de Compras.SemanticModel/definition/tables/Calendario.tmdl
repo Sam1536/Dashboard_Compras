@@ -1,0 +1,64 @@
+table Calendario
+	lineageTag: 1dcec386-d597-4fd9-b159-3adc48b233d3
+
+	column Data
+		formatString: Short Date
+		lineageTag: b9a277ea-3a86-42d6-9b90-c600f817b3f7
+		summarizeBy: none
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 84f89d52-0d2c-4b2a-81eb-8db88d5788b2
+			defaultHierarchy: LocalDateTable_4a72f813-dc79-47f3-8d2e-859895f01156.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dia = Calendario[Data].[Dia]
+		formatString: 0
+		lineageTag: d97e09cd-6b08-4bff-b5d0-5691511dc01e
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mês = Calendario[Data].[MonthNo]
+		formatString: 0
+		lineageTag: 897f38d7-7c7a-478e-8ef0-9574544f2387
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Nome do Mês' = Calendario[Data].[Mês]
+		lineageTag: c29bb22d-7186-4c82-bdcc-172ff2239ff9
+		summarizeBy: none
+		sortByColumn: Mês
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ano = Calendario[Data].[Ano]
+		formatString: 0
+		lineageTag: 64a4a8b7-c231-48a3-a5a6-7d9d5475e754
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mês/Ano = STARTOFMONTH(Calendario[Data])
+		formatString: mmm/yy
+		lineageTag: 2346507e-c54c-477d-99f3-551e19fa2eae
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: ad5ab785-c220-4238-b4d1-27e200368f20
+			defaultHierarchy: LocalDateTable_fb5e08b1-d4e2-46f5-8280-6b5d57b6ba8c.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	partition Calendario = calculated
+		mode: import
+		source = CALENDARAUTO()
+
+	annotation PBI_Id = a085f95d9df048208a371de23d6040ec
+

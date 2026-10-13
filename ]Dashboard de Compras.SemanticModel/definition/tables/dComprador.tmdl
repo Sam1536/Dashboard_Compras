@@ -1,0 +1,33 @@
+table dComprador
+	lineageTag: 8417228c-bce4-4c90-b047-630bec4726f8
+
+	column 'Codigo Comprador'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7bedb073-6996-43ff-a97f-a7e9db18e55f
+		summarizeBy: none
+		sourceColumn: Codigo Comprador
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Nome Comprador'
+		dataType: string
+		lineageTag: 7fa97587-519a-4f33-90e0-2ced800c3505
+		summarizeBy: none
+		sourceColumn: Nome Comprador
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dComprador = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\a-agn\Documents\PoweBi Exercícios e Outros\PowerBI_Impressionador_Hashtag_2023 Materia\Importação e Tratamento de BD-Power Query\Lives Dashboards\Dashboard de Compras\Base Compras.xlsx"), null, true),
+				    dComprador_Sheet = Fonte{[Item="dComprador",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(dComprador_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Codigo Comprador", Int64.Type}, {"Nome Comprador", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

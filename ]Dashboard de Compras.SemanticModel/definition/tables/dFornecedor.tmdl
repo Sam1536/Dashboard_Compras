@@ -1,0 +1,33 @@
+table dFornecedor
+	lineageTag: 67888816-6d64-44ac-9dc7-fb735aad6afa
+
+	column 'Codigo Fornecedor'
+		dataType: int64
+		formatString: 0
+		lineageTag: 67591ef9-b3e7-482c-825f-a57c8b8e2f5d
+		summarizeBy: none
+		sourceColumn: Codigo Fornecedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Nome Fornecedor'
+		dataType: string
+		lineageTag: 8649cfaf-ebd3-4641-9a44-a7cc1ec49116
+		summarizeBy: none
+		sourceColumn: Nome Fornecedor
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dFornecedor = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\a-agn\Documents\PoweBi Exercícios e Outros\PowerBI_Impressionador_Hashtag_2023 Materia\Importação e Tratamento de BD-Power Query\Lives Dashboards\Dashboard de Compras\Base Compras.xlsx"), null, true),
+				    dFornecedor_Sheet = Fonte{[Item="dFornecedor",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(dFornecedor_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Codigo Fornecedor", Int64.Type}, {"Nome Fornecedor", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+
